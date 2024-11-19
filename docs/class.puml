@@ -1,0 +1,82 @@
+@startuml
+
+package "cl,ucn,disc,dsm,pictwin" {
+    
+    class Main {
+        + main(args: String[]): void
+    }
+    
+    package "services"{
+      class Controller {
+        + Controller(database: Database)
+        + seed(): Boolean
+        + register(email: String, password: String): Persona
+        + login(email: String, password: String): Persona
+        + addPic(uuid: String, latitude: Double, longitude: Double, picture: File): PicTwin
+        + getPicTwins(uuid: String): List<PicTwin>
+      }
+    }
+    
+    package "model" {
+    abstract class BaseModel {
+        # id: Long
+        # uuid: String
+        # version: Long
+        # createdAt: Instant
+        # modifiedAt: Instant
+        # deleted: Boolean
+    }
+
+    class Persona {
+        - email: String
+        - password: String
+        - strikes: Integer
+        - blocked: Boolean
+        - blockedAt: Instant
+    }
+
+    entity PicTwin {
+        - expiration: Instant
+        - expired: Boolean
+        - reported: Boolean
+        - picTwins: List<PicTwin>
+    }
+
+    entity Pic {
+        - latitude: Double
+        - longitude: Double
+        - reports: Integer
+        - date: Instant
+        - photo: byte[]
+        - blocked: Boolean
+        - views: Integer
+    }
+  }
+}
+
+
+
+package "io,ebean" {
+    interface Database {
+        ...
+    }
+}
+
+' Relaciones
+Persona --|> BaseModel
+PicTwin --|> BaseModel
+Pic --|> BaseModel
+
+Controller ..> Persona : <<uses>>
+Controller ..> PicTwin : <<uses>>
+Controller ..> Pic : <<uses>>
+Main ..> Controller : <<uses>>
+Controller --> Database : database
+
+PicTwin --> Persona : persona
+PicTwin *-- "0..*" PicTwin : picTwins
+PicTwin --> Pic : pic
+PicTwin --> Pic : twin
+Pic --> Persona : persona
+
+@enduml
