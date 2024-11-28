@@ -1,0 +1,119 @@
+@startuml class
+package "io,javalin" {
+    class Javalin{
+
+    }
+}
+
+
+
+package "cl,ucn,disc,dsm,pictwin" {
+    
+    class Main {
+        + main(args: String[]): void
+    }
+    
+    package "services"{
+      class Controller {
+        + Controller(database: Database)
+        + seed(): Boolean
+        + register(email: String, password: String): Persona
+        + login(email: String, password: String): Persona
+        + addPic(uuid: String, latitude: Double, longitude: Double, picture: File): PicTwin
+        + getPicTwins(uuid: String): List<PicTwin>
+      }
+    }
+
+    abstract class Route {
+        # path: String
+        # handler: Handler
+        + Route (method: Method, path: String, handler: Handler)
+        + getMethod(): Method
+        + getPath(): String
+        + getHandler(): Handler
+    }
+
+    enum Method {
+        GET
+        POST
+        PUT
+    }
+
+    
+    package "model" {
+    abstract class BaseModel {
+        # id: Long
+        # uuid: String
+        # version: Long
+        # createdAt: Instant
+        # modifiedAt: Instant
+        # deleted: Boolean
+    }
+
+    class Persona {
+        - email: String
+        - password: String
+        - strikes: Integer
+        - blocked: Boolean
+        - blockedAt: Instant
+    }
+
+    class PicTwin {
+        - expiration: Instant
+        - expired: Boolean
+        - reported: Boolean
+        '- picTwins: List<PicTwin>
+    }
+
+    class Pic {
+        - latitude: Double
+        - longitude: Double
+        - reports: Integer
+        - date: Instant
+        - photo: byte[]
+        - blocked: Boolean
+        - views: Integer
+    }
+  }
+
+  class TheServer {
+    - createJavalin(): Javalin
+    - addRoute(route: Route, javalin: Javalin): void
+    + main(args: String[]): void
+  }
+
+
+
+}
+
+
+
+package "io,ebean" {
+    class Database {
+        ...
+    }
+}
+
+' Relaciones
+Persona --|> BaseModel
+PicTwin --|> BaseModel
+Pic --|> BaseModel
+
+Controller ..> Persona : <<uses>>
+Controller ..> PicTwin : <<uses>>
+Controller ..> Pic : <<uses>>
+Controller --> Database: -database
+Main ..> Controller : <<uses>>
+Persona --> PicTwin : -picTwins: List<PicTwin>
+
+PicTwin --> Persona : -persona
+PicTwin --> "1" Pic: -pic
+PicTwin --> "1" Pic : -twin
+Pic --> "1" Persona : -persona
+Route --> Method : -method
+TheServer ..> Route: <<uses>>
+TheServer ..> Controller: <<uses>>
+TheServer ..> Javalin: <<uses>>
+Persona --> "*" Pic: -pics: List<Pic>
+
+@enduml
