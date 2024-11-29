@@ -1,6 +1,7 @@
 package cl.ucn.disc.dsm.pictwin.web.routes;
 
 
+import cl.ucn.disc.dsm.pictwin.model.PicTwin;
 import cl.ucn.disc.dsm.pictwin.services.Controller;
 import cl.ucn.disc.dsm.pictwin.web.Route;
 import io.javalin.http.Handler;
@@ -26,23 +27,29 @@ public class PersonaPic extends Route {
 
             UploadedFile file = ctx.uploadedFile("file");
             if(file == null){
+                ctx.status(400);
                 return;
             }
 
             File tempFile = new File("temporal-" + file.filename());
+            log.debug(tempFile.getName());
+
 
             try (FileOutputStream fos = new FileOutputStream(tempFile)){
                 fos.write(file.content().readAllBytes());
             }catch (IOException e){
-                log.error("Error writing the temporal file.", e);
-                return;
+                log.debug("Error writing the temporal file.", e);
             }
 
             log.debug("Archivo recibido: {}",file.filename());
-            ctx.json(controller.addPic(ulid,23.646388888889,70.398055555556,tempFile));
+            PicTwin picTwin = controller.addPic(ulid,23.646388888889,70.398055555556,tempFile);
+
+            ctx.json(picTwin.getPersona().getEmail());
+            ctx.status(200).result("File uploaded.");
+
+            if(!tempFile.delete()){
+                log.debug("No se puede borrar el archivo temporal.");
+            }
         };
-
     }
-
-
 }
