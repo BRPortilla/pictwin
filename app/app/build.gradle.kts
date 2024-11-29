@@ -1,8 +1,20 @@
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
+
+fun generateVersionCode(): Int {
+    val formatter = DateTimeFormatter.ofPattern("yywweHHmm")
+    val now = ZonedDateTime.now(ZoneId.of("America/Santiago"))
+    return now.format(formatter).toInt()
+}
+
+logger.lifecycle("Using VERSION_CODE: ${generateVersionCode()}")
 
 android {
     namespace = "cl.ucn.disc.dsm.pictwin"
@@ -12,28 +24,41 @@ android {
         applicationId = "cl.ucn.disc.dsm.pictwin"
         minSdk = 33
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = generateVersionCode()
+        versionName = "Antares ${generateVersionCode()}"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            versionNameSuffix = ".release"
+            isMinifyEnabled = true
+            isShrinkResources = true
+            isDebuggable = false
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
+        debug {
+            versionNameSuffix = ".debug"
+            isMinifyEnabled = false
+            isShrinkResources = false
+            isDebuggable =  true
+        }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         compose = true
     }
