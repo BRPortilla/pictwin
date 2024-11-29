@@ -26,10 +26,10 @@ public class main {
         }
 
         log.debug("Registering Persona...");
-        Persona p1 = c.register("durrutia@ucn.cl","durrutia123");
+        Persona p1 = c.register("benja.rivera@ucn.cl","durrutia123");
         log.debug("Persona: {}", p1);
 
-        File file = FileUtils.getResourceFile("antofagasta.jpg");
+        File file = FileUtils.getResourceFile("temporal-antofagasta1.jpg");
         log.debug("File: {}", file);
 
         PicTwin pt = c.addPic(p1.getUlid(), -23.6509, -70.3975, file);

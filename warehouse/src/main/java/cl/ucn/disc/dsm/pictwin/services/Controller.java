@@ -107,7 +107,9 @@ public class Controller {
 
         //Encontrar la persona.
         Persona persona = new QPersona().ulid.equalTo(ulidPersona).findOne();
-        log.debug("Persona found: {}", persona);
+        //log.debug("Persona found: {}", persona.getId());
+
+        log.debug(String.valueOf(persona));
 
         //Guardar el Pic.
         Pic pic = Pic.builder()
@@ -119,7 +121,7 @@ public class Controller {
                 .views(0)
                 .persona(persona)
                 .build();
-        log.debug("Pic to save: {}", pic);
+        //log.debug("Pic to save: {}", pic);
         this.database.save(pic);
 
         //Guardar el PicTwin.
@@ -132,7 +134,7 @@ public class Controller {
                 .twin(pic) //FIXME: añadir una nueva pic de la base de datos.
                 .build();
 
-        log.debug("PicTwin to save: {}", picTwin);
+        //log.debug("PicTwin to save: {}", picTwin);
         this.database.save(picTwin);
         return picTwin;
     }
