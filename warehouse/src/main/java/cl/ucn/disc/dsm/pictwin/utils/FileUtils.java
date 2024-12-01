@@ -1,6 +1,6 @@
 package cl.ucn.disc.dsm.pictwin.utils;
 
-import cl.ucn.disc.dsm.pictwin.main;
+import cl.ucn.disc.dsm.pictwin.TheMain;
 
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -18,13 +18,14 @@ public class FileUtils {
     public byte[] readAllBytes(File file){
         try {
             return Files.readAllBytes(file.toPath());
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException("Can't read the file", e);
         }
     }
 
     //Obtener los archivos de los recursos.
-    public static File getResourceFile(@NonNull String name){
-        return new File(Objects.requireNonNull(main.class.getClassLoader().getResource(name)).getFile());
+    public static File getResourceFile(@NonNull String name) {
+        return new File(
+                Objects.requireNonNull(TheMain.class.getClassLoader().getResource(name)).getFile());
     }
 }

@@ -1,6 +1,6 @@
 package cl.ucn.disc.dsm.pictwin.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+//import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.ebean.annotation.Index;
 import io.ebean.annotation.NotNull;
 
@@ -16,7 +16,6 @@ import lombok.ToString;
 
 import java.time.Instant;
 import java.util.List;
-
 
 /**
  * La clase Persona. Extiende la clase abstracta y añade los atributos del modelo de dominio,
@@ -43,7 +42,7 @@ public class Persona extends BaseModel {
     @Builder.Default @NotNull private Integer strikes = 0;
 
     //Bloqueado.
-    @Builder.Default @NotNull private  Boolean blocked = Boolean.FALSE;
+    @Builder.Default @NotNull private Boolean blocked = Boolean.FALSE;
 
     //Fecha de bloqueo.
     private Instant blockedAt;
@@ -56,6 +55,6 @@ public class Persona extends BaseModel {
     //Lista de PicTwins.
     @ToString.Exclude
     @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    //@JsonManagedReference
     private List<PicTwin> picTwins;
 }

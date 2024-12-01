@@ -18,13 +18,13 @@ public class Route {
     protected Handler handler;
 
     //Constructor.
-    protected Route(@NonNull final Method method, @NonNull final String path){
+    protected Route(@NonNull final Method method, @NonNull final String path) {
         this.method = method;
         this.path = path;
     }
 
     //Método.
-    public enum Method{
+    public enum Method {
         GET,
         POST,
         PUT,

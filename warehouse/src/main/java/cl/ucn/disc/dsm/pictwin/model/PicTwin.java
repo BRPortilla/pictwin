@@ -27,7 +27,7 @@ public class PicTwin extends BaseModel {
     @Builder.Default @NotNull private Boolean expired = Boolean.FALSE;
 
     //Reportado.
-    @Builder.Default @NotNull private Boolean reported=  Boolean.FALSE;
+    @Builder.Default @NotNull private Boolean reported = Boolean.FALSE;
 
     //Relación con Persona.
     @ManyToOne(optional = false)

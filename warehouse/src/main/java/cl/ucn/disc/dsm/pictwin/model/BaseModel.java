@@ -3,6 +3,7 @@ Copyright (c) 2024. Departamento de Ingeniería de Sistemas y Computación.
  */
 
 package cl.ucn.disc.dsm.pictwin.model;
+
 import com.github.f4b6a3.ulid.UlidCreator;
 
 import io.ebean.annotation.Index;
@@ -27,16 +28,13 @@ import java.time.Instant;
  *  Podemos construir una clase abstracta que encapsule todos los atributos parte de una clase persistente.
  **/
 
-
 //Atributos para cada uno de los elementos en la base de datos.
 @ToString
 @MappedSuperclass
 public abstract class BaseModel {
 
-
     //ID: identificador único en la base de datos, generalmente correlativo al anterior.
     @Getter @Setter @Id private Long id;
-
 
     //ULID: Identificador único universal ordenado lexicográficamente.
     @Getter
@@ -54,5 +52,5 @@ public abstract class BaseModel {
     @Getter @Setter @WhenModified private Long modifiedAt;
 
     //Borrado suave.
-    @SoftDelete private boolean deleted = Boolean.FALSE;
+    @SoftDelete private final boolean deleted = Boolean.FALSE;
 }

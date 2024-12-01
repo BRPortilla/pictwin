@@ -1,6 +1,6 @@
 package cl.ucn.disc.dsm.pictwin.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+//import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.ebean.annotation.NotNull;
 
 import jakarta.persistence.Entity;
@@ -20,7 +20,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Pic extends BaseModel{
+public class Pic extends BaseModel {
 
     //La latitud.
     @NotNull private Double latitude;
@@ -45,6 +45,6 @@ public class Pic extends BaseModel{
 
     //Relación con Persona.
     @ManyToOne(optional = false)
-    @JsonBackReference
+    //@JsonBackReference
     private Persona persona;
 }
