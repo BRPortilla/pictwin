@@ -3,8 +3,8 @@ package cl.ucn.disc.dsm.pictwin;
 import cl.ucn.disc.dsm.pictwin.model.Persona;
 import cl.ucn.disc.dsm.pictwin.model.PicTwin;
 import cl.ucn.disc.dsm.pictwin.services.Controller;
-
 import cl.ucn.disc.dsm.pictwin.utils.FileUtils;
+
 import io.ebean.DB;
 
 import lombok.extern.slf4j.Slf4j;
@@ -14,14 +14,14 @@ import java.util.List;
 
 //El main.
 @Slf4j
-public class main {
+public class TheMain {
 
     public static void main(String[] args){
 
         log.debug("Starting TheMain ...");
         Controller c = new Controller(DB.getDefault());
 
-        if(c.seed()){
+        if (c.seed()) {
             log.debug("La base de datos ha sido seedeada.");
         }
 
@@ -39,8 +39,9 @@ public class main {
         log.debug("Persona: {}", p2);
 
         List<PicTwin> pts = c.getPicTwins(p1.getUlid());
-        for (PicTwin ptt: pts)
-            log.debug("PicTwin: {}",pt);
+        for (PicTwin ptt : pts) {
+            log.debug("PicTwin: {}", pt);
+        }
 
         log.debug("Done.");
     }
