@@ -19,9 +19,7 @@ import java.io.File;
 import java.time.Instant;
 import java.util.List;
 
-import cl.ucn.disc.dsm.pictwin.utils.FileUtils;
-
-//EL controlador.
+//El controlador.
 @Slf4j
 public class Controller {
 
@@ -29,30 +27,9 @@ public class Controller {
     private final Database database;
 
     //EL constructor del controlador.
-    public Controller (@NonNull final Database database) {this.database = database;}
-
-    //Registrar un nuevo usuario.
-    @Transactional
-    public Persona register(@NonNull final String email, @NonNull final String password){
-
-        //Hashear la contraseña.
-        String hashedPassword = Password.hash(password).withBcrypt().getResult();
-        log.debug("Hashed password: {}", hashedPassword);
-
-        //Construir una Persona.
-        Persona persona = Persona.builder()
-                .email(email)
-                .password(hashedPassword)
-                .strikes(0)
-                .blocked(Boolean.FALSE)
-                .build();
-
-        //Guardar la Persona.
-        this.database.save(persona);
-        log.debug("Persona saved: {}", persona);
-        return persona;
+    public Controller (@NonNull final Database database) {
+        this.database = database;
     }
-
 
     //El "seed" del controlador.
     public Boolean seed(){
@@ -71,26 +48,50 @@ public class Controller {
         //Hacerle seed a la tabla Persona.
         Persona persona = this.register("durrutia@ucn.cl","durrutia123");
         log.debug("Persona registered: {}",persona);
+
         log.debug("Database seeded.");
+
         return Boolean.TRUE;
+    }
+
+    //Registrar un nuevo usuario.
+    @Transactional
+    public Persona register(@NonNull final String email, @NonNull final String password) {
+
+        //Hashear la contraseña.
+        String hashedPassword = Password.hash(password).withBcrypt().getResult();
+        //log.debug("Hashed password: {}", hashedPassword);
+
+        //Construir una Persona.
+        Persona persona = Persona.builder()
+                .email(email)
+                .password(hashedPassword)
+                .strikes(0)
+                .blocked(Boolean.FALSE)
+                .build();
+
+        //Guardar la Persona.
+        this.database.save(persona);
+        log.debug("Persona saved: {}", persona);
+
+        return persona;
     }
 
 
     //Loggear un usuario.
-    public Persona login(@NonNull final String email, @NonNull final String password){
+    public Persona login(@NonNull final String email, @NonNull final String password) {
 
         //Encontrar la persona.
         Persona persona = new QPersona().email.equalTo(email).findOne();
-        if(persona == null){
+        if(persona == null) {
             throw new RuntimeException("User not found");
         }
 
         //Comprobar la contraseña.
-        if(!Password.check(password, persona.getPassword()).withBcrypt()){
+        if(!Password.check(password, persona.getPassword()).withBcrypt()) {
             throw new RuntimeException("Wrong password");
         }
 
-        //Retornar la contraseña.
         return persona;
     }
 
@@ -107,9 +108,9 @@ public class Controller {
 
         //Encontrar la persona.
         Persona persona = new QPersona().ulid.equalTo(ulidPersona).findOne();
-        //log.debug("Persona found: {}", persona.getId());
+        log.debug("Persona found: {}", persona);
 
-        log.debug(String.valueOf(persona));
+        //log.debug(String.valueOf(persona));
 
         //Guardar el Pic.
         Pic pic = Pic.builder()
@@ -117,11 +118,12 @@ public class Controller {
                 .longitude(longitude)
                 .reports(0)
                 .date(Instant.now())
-                .photo(data).blocked(false)
+                .photo(data)
+                .blocked(false)
                 .views(0)
                 .persona(persona)
                 .build();
-        //log.debug("Pic to save: {}", pic);
+        log.debug("Pic to save: {}", pic); //FIXME: Impresión de números.
         this.database.save(pic);
 
         //Guardar el PicTwin.
@@ -134,23 +136,14 @@ public class Controller {
                 .twin(pic) //FIXME: añadir una nueva pic de la base de datos.
                 .build();
 
-        //log.debug("PicTwin to save: {}", picTwin);
+        log.debug("PicTwin to save: {}", picTwin);
         this.database.save(picTwin);
+
         return picTwin;
     }
 
-    /*
-    private byte[] readAllBytes(File file){
-        try {
-            return Files.readAllBytes(file.toPath());
-        } catch (IOException e){
-            throw new RuntimeException("Can't read the file", e);
-        }
-    }
-    */
-
     //Obtener los PicTwins.
-    public List<PicTwin> getPicTwins(@NonNull String ulidPersona){
+    public List<PicTwin> getPicTwins(@NonNull String ulidPersona) {
         return new QPicTwin().persona.ulid.equalTo(ulidPersona).findList();
     }
 }

@@ -33,6 +33,7 @@ public class TheServer {
 
                     //Habilitar comprensión.
                     config.http.gzipOnlyCompression(9);
+
                     //Shutdown de gracia.
                     config.jetty.modifyServer(server -> server.setStopTimeout(5_000));
                 });
@@ -73,7 +74,7 @@ public class TheServer {
         log.debug("Configuring controller...");
         Controller controller = new Controller(DB.getDefault());
 
-        if(controller.seed()){
+        if(controller.seed()) {
             log.debug("Database seeded.");
         }
 
@@ -94,17 +95,18 @@ public class TheServer {
         //TODO: IMPLEMENTAR LAS RUTAS.
 
         //POST -> /api/personas
-        addRoute(new PersonaLogin(controller), javalin);
+        //addRoute(new PersonaLogin(controller), javalin);
 
         //POST -> /api/personas/{ulid}/pic
-        addRoute(new PersonaPic(controller), javalin);
+        //addRoute(new PersonaPic(controller), javalin);
 
         //shutdown latch
         CountDownLatch latch = new CountDownLatch(1);
 
         //añadir enganche de shutdown.
 
-        Runtime.getRuntime().addShutdownHook(
+        Runtime.getRuntime()
+                .addShutdownHook(
                 new Thread(
                         () -> {
                             //Detener el servidor.
