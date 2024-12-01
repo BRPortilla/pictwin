@@ -3,7 +3,6 @@ package cl.ucn.disc.dsm.pictwin.data.network
 import cl.ucn.disc.dsm.pictwin.data.model.Persona
 import cl.ucn.disc.dsm.pictwin.data.model.PicTwin
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -22,4 +21,5 @@ interface ApiService {
 
     @GET("api/personas/{ulid}/pictwins")
     suspend fun getPicTwins(@Path("ulid") ulid: String): Response<List<PicTwin>>
+
 }

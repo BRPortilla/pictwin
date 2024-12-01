@@ -18,8 +18,9 @@ class Repository @Inject constructor(
         require(email.isNotBlank()) { "Email cannot be blank" }
         require(password.length >= 6) { "Password needs to be at least 6 characters long" }
 
-        return runCatching{
+        return runCatching {
             log.debug("Authenticating user with rut/email: $email ..")
+
             val response = apiService.authenticate(email, password)
 
             when {
@@ -37,7 +38,6 @@ class Repository @Inject constructor(
             log.error("Authentication failed", authError)
         }
     }
-
 
     suspend fun getPicTwins(ulid: String): Result<List<PicTwin>> {
 

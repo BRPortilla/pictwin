@@ -24,7 +24,6 @@ object NetworkModule {
     /**
      * Provides the Gson instance.
      */
-
     @Provides
     @Singleton
     fun provideGson(): Gson {
@@ -38,10 +37,10 @@ object NetworkModule {
     /**
     Provides the [ApiService] instance.
      */
-
     @Provides
     @Singleton
     fun provideApiService(gson: Gson): ApiService {
+
         val log = LoggerFactory.getLogger(ApiService::class.java)
 
         val logging = HttpLoggingInterceptor { message -> log.debug(message) }.apply {
@@ -60,6 +59,4 @@ object NetworkModule {
 
         return retrofit.create(ApiService::class.java)
     }
-
-
 }
