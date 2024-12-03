@@ -45,7 +45,7 @@ test {
     useJUnitPlatform()
 }
 
-tasks.named('wrapper'){
+tasks.named('wrapper') {
     gradleVersion = '8.10.2'
     distributionType = Wrapper.DistributionType.ALL;
 }
