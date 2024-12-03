@@ -1,0 +1,31 @@
+@startuml domain
+
+entity Persona{
+    * Correo Electrónico
+    * Contraseña
+    * Número de Strikes
+    * Bloqueada
+    * Fecha de Bloqueo
+}
+
+entity Pic{
+    * Latitud
+    * Longitud
+    * Número de Reportes
+    * Fecha
+    * Foto
+    * Bloqueado
+    * Número de Vistas
+}
+
+entity PicTwin{
+    * Fecha de Vencimiento
+    * Vencido
+    * Reportado
+}
+
+Persona "1" --> "*" Pic : toma
+Persona "1" --> "*" PicTwin : posee
+PicTwin "*" --> "1" Pic : mi
+PicTwin "*" --> "1" Pic : twin
+@enduml
