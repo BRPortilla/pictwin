@@ -2,8 +2,8 @@ package cl.ucn.disc.dsm.pictwin.data.repository
 
 import cl.ucn.disc.dsm.pictwin.data.network.NetworkModule
 import kotlinx.coroutines.runBlocking
-//FIXME: import org.junit.Before
-//FIXME: import org.junit.Test
+import org.junit.Before
+import org.junit.Test
 import org.slf4j.LoggerFactory
 
 class RepositoryTest {
@@ -12,8 +12,7 @@ class RepositoryTest {
 
     private lateinit var repository: Repository
 
-
-
+    @Before
     fun setup() {
         val gson = NetworkModule.provideGson()
         val api = NetworkModule.provideApiService(gson)
@@ -21,7 +20,7 @@ class RepositoryTest {
         repository = Repository(api)
     }
 
-    //@Test
+    @Test
     fun testAuthenticate() {
         runBlocking {
             log.debug("Testing authenticate() ...")
