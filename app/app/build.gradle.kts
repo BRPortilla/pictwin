@@ -87,6 +87,7 @@ dependencies {
     implementation(libs.okhttp3.logging.interceptor)
 
     implementation(libs.hilt.android)
+    implementation(libs.junit.junit)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation)
 
