@@ -95,7 +95,7 @@ public class TheServer {
         //TODO: IMPLEMENTAR LAS RUTAS.
 
         //POST -> /api/personas
-        //addRoute(new PersonaLogin(controller), javalin);
+        addRoute(new PersonaLogin(controller), javalin);
 
         //POST -> /api/personas/{ulid}/pic
         //addRoute(new PersonaPic(controller), javalin);
